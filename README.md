@@ -1,5 +1,10 @@
 # Projekt sklep 2025
 
+## Uruchomienie
+
+1. Zmienić nazwę pliku `products.txt.example` na `products.txt` (opcjonalnie)
+2. Skompilować i uruchomic
+
 ## Założenia projektu (od Pana Bartka)
 
 Projekt można wykonać w C++ lub C, nie używamy typu “string” tylko “char”. Projekt wykonujemy zgodnie z zaleceniami (tj. tablice, pliki itd.)
