@@ -3,7 +3,7 @@
 ## Uruchomienie
 
 1. Zmienić nazwę pliku `products.txt.example` na `products.txt` (opcjonalnie)
-2. Skompilować i uruchomic
+2. Skompilować i uruchomić
 
 ## Założenia projektu (od Pana Bartka)
 
