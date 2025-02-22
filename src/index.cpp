@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "procedural.h"
+#include "oop.h"
 
 using namespace std;
 
@@ -20,7 +21,7 @@ int main()
         procedural();
         break;
     case 2:
-        // TODO: Implement OOP version
+        oop();
         break;
     default:
         cout << "Nieprawidłowa opcja!" << endl;
