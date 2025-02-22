@@ -3,6 +3,8 @@
 #include <cstring>
 #include <limits>
 
+#include "index.h"
+
 using namespace std;
 
 const int PRODUCTS_LIMIT = 100;
@@ -162,24 +164,17 @@ void readFromFile()
     cout << "Wczytano dane z pliku…" << endl;
 }
 
-void clearConsole()
-{
-#if defined(_WIN32)
-    system("cls");
-#else
-    system("clear");
-#endif
-}
-
 void menu()
 {
     int choice;
 
     clearConsole();
 
+    bool firstRun = true;
     do
     {
-        cout << "\n--- SKLEP ---" << endl;
+        string title = firstRun ? "--- WERSJA PROCEDURALNA ---" : "\n--- WERSJA PROCEDURALNA ---";
+        cout << title << endl;
         cout << "1. Dodaj produkt" << endl;
         cout << "2. Wyświetl wszystkie produkty" << endl;
         cout << "3. Wyszukaj po nazwie" << endl;
@@ -189,6 +184,8 @@ void menu()
         cout << "7. Wyjście" << endl;
         cout << "Wybierz opcję: ";
         cin >> choice;
+
+        firstRun = false;
 
         switch (choice)
         {
