@@ -3,7 +3,7 @@
 ## Uruchomienie
 
 1. Zmienić nazwę pliku `products.txt.example` na `products.txt` (opcjonalnie)
-2. Skompilować i uruchomić
+2. Skompilować i uruchomić np. używająć g++ (`cd src && g++ -fdiagnostics-color=always -g *.cpp -o program  && ./program`)
 
 ## Założenia projektu (od Pana Bartka)
 
