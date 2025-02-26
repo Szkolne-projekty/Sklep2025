@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <algorithm>
 
 #include "index.h"
 
@@ -44,6 +45,7 @@ public:
         products.push_back(product);
         cout << "Produkt został dodany!" << endl;
     };
+
     void displayProducts()
     {
         if (products.empty())
@@ -60,6 +62,7 @@ public:
                  << "zl\tIlość: " << product.quantity << endl;
         }
     };
+
     void searchByName()
     {
         if (products.empty())
@@ -89,6 +92,7 @@ public:
         if (!found)
             cout << "Nie znaleziono produktu o podanej nazwie." << endl;
     };
+
     void searchByCategory()
     {
         if (products.empty())
@@ -117,6 +121,34 @@ public:
         if (!found)
             cout << "Nie znaleziono produktów w podanej kategorii." << endl;
     };
+
+    void deleteByName()
+    {
+        if (products.empty())
+        {
+            cout << "Brak produktów do usunięcia." << endl;
+            return;
+        }
+
+        string prompt;
+        cout << "Podaj nazwę produktu do usunięcia: ";
+        cin.ignore();
+        getline(cin, prompt);
+
+        auto it = find_if(products.begin(), products.end(), [&](const Product &product)
+                          { return product.name == prompt; });
+
+        if (it == products.end())
+        {
+            cout << "Nie znaleziono produktu o podanej nazwie…" << endl;
+            return;
+        }
+
+        int id = it->id;
+        products.erase(it);
+        cout << "Produkt o ID " << id << " został usunięty." << endl;
+    };
+
     void saveToFile()
     {
         if (products.empty())
@@ -140,6 +172,7 @@ public:
         fclose(plik);
         cout << "Zapisano dane do pliku…" << endl;
     };
+
     void readFromFile()
     {
         FILE *plik = fopen(OOP_FILE_PATH, "r");
@@ -163,6 +196,7 @@ public:
         fclose(plik);
         cout << "Wczytano dane z pliku…" << endl;
     };
+
     void menu()
     {
         int choice;
@@ -178,9 +212,10 @@ public:
             cout << "2. Wyświetl wszystkie produkty" << endl;
             cout << "3. Wyszukaj po nazwie" << endl;
             cout << "4. Wyszukaj po kategorii" << endl;
-            cout << "5. Zapisz do pliku" << endl;
-            cout << "6. Wczytaj z pliku" << endl;
-            cout << "7. Wyjście" << endl;
+            cout << "5. Usuń po nazwie" << endl;
+            cout << "6. Zapisz do pliku" << endl;
+            cout << "7. Wczytaj z pliku" << endl;
+            cout << "8. Wyjście" << endl;
             cout << "Wybierz opcję: ";
             cin >> choice;
 
@@ -201,18 +236,21 @@ public:
                 searchByCategory();
                 break;
             case 5:
-                saveToFile();
+                deleteByName();
                 break;
             case 6:
-                readFromFile();
+                saveToFile();
                 break;
             case 7:
+                readFromFile();
+                break;
+            case 8:
                 cout << "Zamykanie programu..." << endl;
                 break;
             default:
                 cout << "Nieprawidłowa opcja!" << endl;
             }
-        } while (choice != 7);
+        } while (choice != 8);
     };
 };
 
