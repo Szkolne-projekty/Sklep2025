@@ -2,6 +2,7 @@
 #include <cstdio>
 #include <cstring>
 #include <limits>
+#include <vector>
 
 #include "index.h"
 
@@ -19,6 +20,75 @@ double prices[PRODUCTS_LIMIT];
 int quantities[PRODUCTS_LIMIT];
 int productsCount = 0;
 
+void swapInt(int &a, int &b)
+{
+    int temp = a;
+    a = b;
+    b = temp;
+}
+
+void swapDouble(double &a, double &b)
+{
+    double temp = a;
+    a = b;
+    b = temp;
+}
+
+void swapCharArray(char a[MAX_LENGTH], char b[MAX_LENGTH])
+{
+    char temp[MAX_LENGTH];
+    strcpy(temp, a);
+    strcpy(a, b);
+    strcpy(b, temp);
+}
+
+void sortByID()
+{
+    for (int i = 0; i < productsCount - 1; i++)
+    {
+        int minIndex = i;
+
+        for (int j = i + 1; j < productsCount; j++)
+        {
+            if (ids[j] < ids[minIndex])
+            {
+                minIndex = j;
+            }
+        }
+
+        if (minIndex != i)
+        {
+            // Zamiana ID
+            swapInt(ids[i], ids[minIndex]);
+
+            // Zamiana nazw
+            swapCharArray(names[i], names[minIndex]);
+
+            // Zamiana kategorii
+            swapCharArray(categories[i], categories[minIndex]);
+
+            // Zamiana cen
+            swapDouble(prices[i], prices[minIndex]);
+
+            // Zamiana ilości
+            swapInt(quantities[i], quantities[minIndex]);
+        }
+    }
+}
+
+int getLastId()
+{
+    int lastId = 0;
+    for (int i = 0; i < productsCount; i++)
+    {
+        if (ids[i] > lastId)
+        {
+            lastId = ids[i];
+        }
+    }
+    return lastId;
+}
+
 void addProduct()
 {
     if (productsCount >= PRODUCTS_LIMIT)
@@ -27,7 +97,7 @@ void addProduct()
         return;
     }
 
-    ids[productsCount] = productsCount + 1;
+    ids[productsCount] = getLastId() + 1;
 
     cout << "Podaj nazwę: ";
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -122,6 +192,50 @@ void searchByCategory()
         cout << "Nie znaleziono produktów w podanej kategorii." << endl;
 }
 
+void deleteByName()
+{
+    if (productsCount == 0)
+    {
+        cout << "Brak produktów do usunięcia." << endl;
+        return;
+    }
+
+    char prompt[MAX_LENGTH];
+
+    cout << "Podaj nazwę produktu do usunięcia: ";
+    cin.ignore();
+    cin.getline(prompt, MAX_LENGTH);
+
+    int index = -1;
+
+    for (int i = 0; i < productsCount; i++)
+    {
+        if (strcmp(names[i], prompt) == 0)
+        {
+            index = i;
+            break;
+        }
+    }
+
+    if (index == -1)
+    {
+        cout << "Nie znaleziono produktu o podanej nazwie…" << endl;
+        return;
+    }
+
+    for (int i = index; i < productsCount - 1; i++)
+    {
+        ids[i] = ids[i + 1];
+        strcpy(names[i], names[i + 1]);
+        strcpy(categories[i], categories[i + 1]);
+        prices[i] = prices[i + 1];
+        quantities[i] = quantities[i + 1];
+    }
+
+    productsCount--;
+    cout << "Produkt o ID " << index << " został usunięty." << endl;
+}
+
 void saveToFile()
 {
     FILE *plik = fopen(FILE_PATH, "w");
@@ -160,6 +274,8 @@ void readFromFile()
             break;
     }
 
+    sortByID();
+
     fclose(plik);
     cout << "Wczytano dane z pliku…" << endl;
 }
@@ -179,9 +295,10 @@ void menu()
         cout << "2. Wyświetl wszystkie produkty" << endl;
         cout << "3. Wyszukaj po nazwie" << endl;
         cout << "4. Wyszukaj po kategorii" << endl;
-        cout << "5. Zapisz do pliku" << endl;
-        cout << "6. Wczytaj z pliku" << endl;
-        cout << "7. Wyjście" << endl;
+        cout << "5. Usuń po nazwie" << endl;
+        cout << "6. Zapisz do pliku" << endl;
+        cout << "7. Wczytaj z pliku" << endl;
+        cout << "8. Wyjście" << endl;
         cout << "Wybierz opcję: ";
         cin >> choice;
 
@@ -202,18 +319,21 @@ void menu()
             searchByCategory();
             break;
         case 5:
-            saveToFile();
+            deleteByName();
             break;
         case 6:
-            readFromFile();
+            saveToFile();
             break;
         case 7:
+            readFromFile();
+            break;
+        case 8:
             cout << "Zamykanie programu..." << endl;
             break;
         default:
             cout << "Nieprawidłowa opcja!" << endl;
         }
-    } while (choice != 7);
+    } while (choice != 8);
 }
 
 void procedural()
