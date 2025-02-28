@@ -122,6 +122,31 @@ public:
             cout << "Nie znaleziono produktów w podanej kategorii." << endl;
     };
 
+    void deleteById()
+    {
+        if (products.empty())
+        {
+            cout << "Brak produktów do usunięcia." << endl;
+            return;
+        }
+
+        int prompt;
+        cout << "Podaj ID produktu do usunięcia: ";
+        cin >> prompt;
+
+        auto it = find_if(products.begin(), products.end(), [&](const Product &product)
+                          { return product.id == prompt; });
+
+        if (it == products.end())
+        {
+            cout << "Nie znaleziono produktu o podanym ID…" << endl;
+            return;
+        }
+
+        products.erase(it);
+        cout << "Produkt o ID " << prompt << " został usunięty." << endl;
+    }
+
     void deleteByName()
     {
         if (products.empty())
@@ -146,7 +171,7 @@ public:
 
         int id = it->id;
         products.erase(it);
-        cout << "Produkt o ID " << id << " został usunięty." << endl;
+        cout << "Produkt " << prompt << " o ID " << id << " został usunięty." << endl;
     };
 
     void saveToFile()
@@ -212,10 +237,10 @@ public:
             cout << "2. Wyświetl wszystkie produkty" << endl;
             cout << "3. Wyszukaj po nazwie" << endl;
             cout << "4. Wyszukaj po kategorii" << endl;
-            cout << "5. Usuń po nazwie" << endl;
-            cout << "6. Zapisz do pliku" << endl;
-            cout << "7. Wczytaj z pliku" << endl;
-            cout << "8. Wyjście" << endl;
+            cout << "6. Usuń po nazwie" << endl;
+            cout << "7. Zapisz do pliku" << endl;
+            cout << "8. Wczytaj z pliku" << endl;
+            cout << "9. Wyjście" << endl;
             cout << "Wybierz opcję: ";
             cin >> choice;
 
@@ -236,21 +261,24 @@ public:
                 searchByCategory();
                 break;
             case 5:
-                deleteByName();
+                deleteById();
                 break;
             case 6:
-                saveToFile();
+                deleteByName();
                 break;
             case 7:
-                readFromFile();
+                saveToFile();
                 break;
             case 8:
+                readFromFile();
+                break;
+            case 9:
                 cout << "Zamykanie programu..." << endl;
                 break;
             default:
                 cout << "Nieprawidłowa opcja!" << endl;
             }
-        } while (choice != 8);
+        } while (choice != 9);
     };
 };
 
