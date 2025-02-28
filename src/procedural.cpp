@@ -192,6 +192,48 @@ void searchByCategory()
         cout << "Nie znaleziono produktów w podanej kategorii." << endl;
 }
 
+void deleteById()
+{
+    if (productsCount == 0)
+    {
+        cout << "Brak produktów do usunięcia." << endl;
+        return;
+    }
+
+    int prompt;
+    cout << "Podaj ID produktu do usunięcia: ";
+    cin >> prompt;
+
+    int index = -1;
+
+    for (int i = 0; i < productsCount; i++)
+    {
+        if (ids[i] == prompt)
+        {
+            index = i;
+            break;
+        }
+    }
+
+    if (index == -1)
+    {
+        cout << "Nie znaleziono produktu o podanym ID…" << endl;
+        return;
+    }
+
+    for (int i = index; i < productsCount - 1; i++)
+    {
+        ids[i] = ids[i + 1];
+        strcpy(names[i], names[i + 1]);
+        strcpy(categories[i], categories[i + 1]);
+        prices[i] = prices[i + 1];
+        quantities[i] = quantities[i + 1];
+    }
+
+    productsCount--;
+    cout << "Produkt o ID " << prompt << " został usunięty." << endl;
+}
+
 void deleteByName()
 {
     if (productsCount == 0)
@@ -233,7 +275,7 @@ void deleteByName()
     }
 
     productsCount--;
-    cout << "Produkt o ID " << index << " został usunięty." << endl;
+    cout << "Produkt " << prompt << " o ID " << index << " został usunięty." << endl;
 }
 
 void saveToFile()
@@ -295,10 +337,10 @@ void menu()
         cout << "2. Wyświetl wszystkie produkty" << endl;
         cout << "3. Wyszukaj po nazwie" << endl;
         cout << "4. Wyszukaj po kategorii" << endl;
-        cout << "5. Usuń po nazwie" << endl;
-        cout << "6. Zapisz do pliku" << endl;
-        cout << "7. Wczytaj z pliku" << endl;
-        cout << "8. Wyjście" << endl;
+        cout << "6. Usuń po nazwie" << endl;
+        cout << "7. Zapisz do pliku" << endl;
+        cout << "8. Wczytaj z pliku" << endl;
+        cout << "9. Wyjście" << endl;
         cout << "Wybierz opcję: ";
         cin >> choice;
 
@@ -319,21 +361,24 @@ void menu()
             searchByCategory();
             break;
         case 5:
-            deleteByName();
+            deleteById();
             break;
         case 6:
-            saveToFile();
+            deleteByName();
             break;
         case 7:
-            readFromFile();
+            saveToFile();
             break;
         case 8:
+            readFromFile();
+            break;
+        case 9:
             cout << "Zamykanie programu..." << endl;
             break;
         default:
             cout << "Nieprawidłowa opcja!" << endl;
         }
-    } while (choice != 8);
+    } while (choice != 9);
 }
 
 void procedural()
