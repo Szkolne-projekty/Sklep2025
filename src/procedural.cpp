@@ -337,6 +337,7 @@ void menu()
         cout << "2. Wyświetl wszystkie produkty" << endl;
         cout << "3. Wyszukaj po nazwie" << endl;
         cout << "4. Wyszukaj po kategorii" << endl;
+        cout << "5. Usuń po ID" << endl;
         cout << "6. Usuń po nazwie" << endl;
         cout << "7. Zapisz do pliku" << endl;
         cout << "8. Wczytaj z pliku" << endl;
