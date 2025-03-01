@@ -275,7 +275,7 @@ void deleteByName()
     }
 
     productsCount--;
-    cout << "Produkt " << prompt << " o ID " << index << " został usunięty." << endl;
+    cout << "Produkt " << prompt << " o ID " << ids[index] << " został usunięty." << endl;
 }
 
 void saveToFile()
