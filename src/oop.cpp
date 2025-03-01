@@ -24,10 +24,25 @@ private:
     vector<Product> products;
 
 public:
+    void sortById()
+    {
+        sort(products.begin(), products.end(), [](const Product &a, const Product &b)
+             { return a.id < b.id; });
+    }
+
     void addProduct()
     {
         Product product;
-        product.id = products.size() + 1;
+
+        int maxId = 0;
+        for (const auto &p : products)
+        {
+            if (p.id > maxId)
+            {
+                maxId = p.id;
+            }
+        }
+        product.id = maxId + 1;
 
         cout << "Podaj nazwę: ";
         cin.ignore();
@@ -219,6 +234,8 @@ public:
         }
 
         fclose(plik);
+
+        sortById();
         cout << "Wczytano dane z pliku…" << endl;
     };
 
@@ -237,6 +254,7 @@ public:
             cout << "2. Wyświetl wszystkie produkty" << endl;
             cout << "3. Wyszukaj po nazwie" << endl;
             cout << "4. Wyszukaj po kategorii" << endl;
+            cout << "5. Usuń po ID" << endl;
             cout << "6. Usuń po nazwie" << endl;
             cout << "7. Zapisz do pliku" << endl;
             cout << "8. Wczytaj z pliku" << endl;
